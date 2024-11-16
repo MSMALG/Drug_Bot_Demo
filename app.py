@@ -3,7 +3,7 @@ import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import Draw
 
-file_path = 'drug_nomenclature_and_modifications.xlsx'
+file_path = 'Drug_Modifications_Corrected.xlsx'
 df = pd.read_excel(file_path)
 
 st.title("Drug Recommendation and Side Effect Solution Bot")
