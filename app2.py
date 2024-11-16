@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-file_path = 'drug_nomenclature_and_modifications.xlsx'  
+file_path = 'Drug_Modifications_Corrected.xlsx'  
 df = pd.read_excel(file_path)
 
 #Function to fetch molecule image from PubChem
