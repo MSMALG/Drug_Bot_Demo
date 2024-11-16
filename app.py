@@ -6,24 +6,21 @@ from rdkit.Chem import Draw
 file_path = 'drug_nomenclature_and_modifications.xlsx'
 df = pd.read_excel(file_path)
 
-# Streamlit App
 st.title("Drug Recommendation and Side Effect Solution Bot")
 
-# User Input: Target Receptor
 target_receptor = st.text_input("Enter the target receptor (e.g., β1-selective adrenergic blocker):")
 
 if target_receptor:
-    # Query the dataset for the given receptor
+    #Query the dataset for the given receptor
     filtered_df = df[df['Target Receptor'].str.contains(target_receptor, case=False, na=False)]
     
     if not filtered_df.empty:
-        # Display Drug Information
         drug_name = filtered_df.iloc[0]['Drug Nomenclature']
         smiles = filtered_df.iloc[0]['Chemical Nomenclature (Molecular Input Line Entry System)']
         
         st.subheader(f"Recommended Drug: {drug_name}")
         
-        # Validate and display the molecular structure
+        #Validate and display the molecular structure
         mol = Chem.MolFromSmiles(smiles)
         if mol:
             img = Draw.MolToImage(mol)
@@ -31,7 +28,6 @@ if target_receptor:
         else:
             st.error("Invalid SMILES string. Unable to generate molecular structure.")
 
-        # Side Effects and Solutions
         if st.button("Check for Side Effects"):
             side_effects = filtered_df['Side Effect'].tolist()
             modifications = filtered_df['Modification'].tolist()
@@ -41,7 +37,7 @@ if target_receptor:
                 st.subheader(f"Side Effect: {side_effect}")
                 st.text(f"Solution: {modification}")
                 
-                # Validate and visualize Modified Molecule
+                #Validate and visualize Modified Molecule
                 mod_mol = Chem.MolFromSmiles(mod_smiles)
                 if mod_mol:
                     mod_img = Draw.MolToImage(mod_mol)
