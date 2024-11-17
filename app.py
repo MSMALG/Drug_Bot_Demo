@@ -6,7 +6,7 @@ from rdkit.Chem import Draw
 file_path = 'final_drugs.xlsx'
 df = pd.read_excel(file_path)
 
-st.title("Drug Recommendation and Side Effect Solution Bot")
+st.title("Drug Discovery Bot")
 
 if "show_user_guide" not in st.session_state:
     st.session_state["show_user_guide"] = False
@@ -49,10 +49,10 @@ if target_receptor:
         drug_name = filtered_df.iloc[0]['Drug Nomenclature']
         smiles = filtered_df.iloc[0]['Chemical Nomenclature (Molecular Input Line Entry System)']
         
-        # Display the recommended drug
+        #Display the recommended drug
         st.subheader(f"Recommended Drug: {drug_name}")
         
-        # Validate and display the molecular structure
+        #Validate and display the molecular structure
         mol = Chem.MolFromSmiles(smiles)
         if mol:
             img = Draw.MolToImage(mol)
@@ -60,26 +60,22 @@ if target_receptor:
         else:
             st.error("Invalid SMILES string. Unable to generate molecular structure.")
 
-        # Query box for user input
         user_query = st.text_input("Any other query?")
 
         if user_query:
-            # Check if the query contains the words "side effects"
             if "side effects" in user_query.lower():
-                # Extract side effects for the specific drug
+                #Extract side effects for the specific drug
                 side_effects = filtered_df['Side Effect'].tolist()
                 modifications = filtered_df['Modification'].tolist()
                 modified_smiles = filtered_df['Molecular Input Line Entry System (Modified)'].tolist()
                 
                 if side_effects:
                     st.subheader(f"Side Effects for {drug_name}")
-                    
-                    # Display each side effect as an expandable section
+                    #Display each side effect as an expandable section
                     for i, (side_effect, modification, mod_smiles) in enumerate(zip(side_effects, modifications, modified_smiles)):
                         with st.expander(f"Side Effect {i + 1}: {side_effect}"):
                             st.text(f"Solution: {modification}")
-                            
-                            # Validate and visualize modified molecule
+                            #Validate and visualize modified molecule
                             mod_mol = Chem.MolFromSmiles(mod_smiles)
                             if mod_mol:
                                 mod_img = Draw.MolToImage(mod_mol)
